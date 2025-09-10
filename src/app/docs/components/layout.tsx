@@ -4,6 +4,30 @@ import type React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
+import { useState, useEffect, useMemo } from "react";
+import { Menu, X, ArrowLeft, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+// Data model for docs navigation (extend here to add more components)
+const componentPages = [
+    { title: "Button", href: "/docs/components/button" },
+    { title: "Input", href: "/docs/components/input" },
+];
+
+const gettingStartedPages = [
+    { title: "Introduction", href: "/docs/introduction" },
+    { title: "Installation", href: "/docs/installation" },
+    { title: "Theming", href: "/docs/theming" },
+];
+
+// Combine for sidebar groups
+const navGroups: {
+    heading: string;
+    items: { title: string; href: string }[];
+}[] = [
+    { heading: "Getting Started", items: gettingStartedPages },
+    { heading: "Components", items: componentPages },
+];
 
 // Navigation item component with active state
 function NavItem({
@@ -22,60 +46,262 @@ function NavItem({
         <Link
             href={href}
             className={cn(
-                "block py-2 px-3 rounded-md transition-colors hover:bg-accent/50 text-sm",
+                "group relative flex items-center gap-2 py-2 px-3 rounded-md text-sm transition-colors",
+                "hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/70",
                 isActive
-                    ? "bg-accent text-accent-foreground font-medium"
+                    ? "bg-accent text-accent-foreground font-medium shadow-sm"
                     : "text-muted-foreground",
                 className,
             )}
         >
-            {children}
+            {/* Active indicator bar */}
+            <span
+                className={cn(
+                    "absolute left-0 top-1/2 -translate-y-1/2 h-6 w-1 rounded-full bg-primary transition-opacity",
+                    isActive
+                        ? "opacity-100"
+                        : "opacity-0 group-hover:opacity-40",
+                )}
+                aria-hidden
+            />
+            <span className="relative z-10">{children}</span>
         </Link>
     );
 }
 
+function PrevNextNav() {
+    const pathname = usePathname();
+    // Normalize trailing slash
+    const normalized =
+        pathname.endsWith("/") && pathname.length > 1
+            ? pathname.slice(0, -1)
+            : pathname;
+
+    const index = componentPages.findIndex((p) => normalized === p.href);
+    if (index === -1) return null; // Only show on component pages
+
+    const prev = index > 0 ? componentPages[index - 1] : null;
+    const next =
+        index < componentPages.length - 1 ? componentPages[index + 1] : null;
+
+    return (
+        <nav
+            aria-label="Component page navigation"
+            className="mt-12 pt-8 border-t border-border flex flex-col gap-4 sm:flex-row sm:items-stretch"
+        >
+            <div className="flex-1">
+                {prev ? (
+                    <Button
+                        asChild
+                        variant="outline"
+                        className="w-full justify-start"
+                    >
+                        <Link href={prev.href} className="group">
+                            <ArrowLeft className="h-4 w-4" />
+                            <span className="flex flex-col text-left leading-tight">
+                                <span className="text-[10px] font-normal tracking-wider text-muted-foreground -mb-0.5">
+                                    Previous
+                                </span>
+                                {prev.title}
+                            </span>
+                        </Link>
+                    </Button>
+                ) : (
+                    <div className="opacity-40 text-muted-foreground text-sm select-none px-1">
+                        Start of list
+                    </div>
+                )}
+            </div>
+            <div className="flex-1 text-right">
+                {next ? (
+                    <Button
+                        asChild
+                        variant="outline"
+                        className="w-full justify-end"
+                    >
+                        <Link href={next.href} className="group">
+                            <span className="flex flex-col text-right leading-tight">
+                                <span className="text-[10px] font-normal tracking-wider text-muted-foreground -mb-0.5">
+                                    Next
+                                </span>
+                                {next.title}
+                            </span>
+                            <ArrowRight className="h-4 w-4" />
+                        </Link>
+                    </Button>
+                ) : (
+                    <div className="opacity-40 text-muted-foreground text-sm select-none px-1">
+                        End of list
+                    </div>
+                )}
+            </div>
+        </nav>
+    );
+}
+
 export default function Layout({ children }: { children: React.ReactNode }) {
+    const [open, setOpen] = useState(false);
+    const pathname = usePathname();
+
+    // Close mobile nav on route change
+    // Close the sidebar after navigation.
+    // The linter suggests fewer dependencies, but we explicitly depend on pathname for clarity.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(() => {
+        // reference pathname so linter understands dependency is intentional
+        void pathname; // Close mobile nav whenever route changes
+        setOpen(false);
+    }, [pathname]);
+
+    // Prevent body scroll when sidebar open (mobile)
+    useEffect(() => {
+        if (open) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
+        }
+    }, [open]);
+
+    const currentPage = useMemo(() => {
+        return navGroups
+            .flatMap((g) => g.items)
+            .find((i) => pathname.startsWith(i.href));
+    }, [pathname]);
+
     return (
         <div className="flex min-h-screen bg-background">
-            {/* Sidebar */}
-            <aside className="w-64 border-r border-border bg-[rgba(var(--surface-rgb),0.7)] backdrop-blur-lg p-4 sticky top-0 h-screen overflow-y-auto">
-                <div className="mb-8">
-                    <Link href="/" className="flex items-center gap-2 py-3">
-                        <span className="font-bold text-xl">Nekoglass UI</span>
-                    </Link>
-                </div>
+            {/* Skip link */}
+            <a
+                href="#main"
+                className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 z-50 rounded-md bg-primary px-4 py-2 text-primary-foreground shadow-lg"
+            >
+                Skip to content
+            </a>
 
-                <div className="space-y-6">
-                    <div>
-                        <h2 className="font-medium text-xs uppercase tracking-wider text-muted-foreground mb-2 px-3">
-                            Getting Started
-                        </h2>
-                        <div className="space-y-1">
-                            <NavItem href="/docs/introduction">
-                                Introduction
-                            </NavItem>
-                            <NavItem href="/docs/installation">
-                                Installation
-                            </NavItem>
-                            <NavItem href="/docs/theming">Theming</NavItem>
-                        </div>
+            {/* Sidebar (desktop) */}
+            <aside className="hidden lg:flex w-64 shrink-0 border-r border-border bg-[rgba(var(--surface-rgb),0.55)] backdrop-blur-xl p-4 sticky top-0 h-screen overflow-y-auto">
+                <div className="flex flex-col w-full">
+                    <div className="mb-6 px-2">
+                        <Link href="/" className="flex items-center gap-2 py-2">
+                            <span className="font-bold text-xl tracking-tight bg-gradient-to-r from-primary to-purple-400 bg-clip-text text-transparent">
+                                Nekoglass UI
+                            </span>
+                        </Link>
                     </div>
-
-                    <div>
-                        <h2 className="font-medium text-xs uppercase tracking-wider text-muted-foreground mb-2 px-3">
-                            Components
-                        </h2>
-                        <div className="space-y-1">
-                            <NavItem href="/docs/components/button">
-                                Button
-                            </NavItem>
-                        </div>
+                    <div className="space-y-7">
+                        {navGroups.map((group) => (
+                            <div key={group.heading}>
+                                <h2 className="font-medium text-[11px] uppercase tracking-wider text-muted-foreground mb-2">
+                                    <span className="px-3 block">
+                                        {group.heading}
+                                    </span>
+                                </h2>
+                                <div className="space-y-1">
+                                    {group.items.map((item) => (
+                                        <NavItem
+                                            key={item.href}
+                                            href={item.href}
+                                        >
+                                            {item.title}
+                                        </NavItem>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </aside>
 
-            {/* Main content */}
-            <main className="flex-1 py-8 px-6 max-w-4xl">{children}</main>
+            {/* Mobile sidebar overlay */}
+            <div
+                className={cn(
+                    "lg:hidden fixed inset-0 z-40 transition-opacity",
+                    open
+                        ? "bg-black/40 backdrop-blur-sm"
+                        : "pointer-events-none opacity-0",
+                )}
+                onClick={() => setOpen(false)}
+                aria-hidden
+            />
+            <aside
+                className={cn(
+                    "lg:hidden fixed z-50 top-0 left-0 h-full w-72 border-r border-border bg-[rgba(var(--surface-rgb),0.85)] backdrop-blur-xl p-4 transition-transform ease-out duration-300 flex flex-col",
+                    open ? "translate-x-0" : "-translate-x-full",
+                )}
+                aria-label="Documentation navigation"
+            >
+                <div className="mb-4 flex items-center justify-between">
+                    <Link href="/" className="flex items-center gap-2 py-2">
+                        <span className="font-bold text-lg tracking-tight">
+                            Nekoglass UI
+                        </span>
+                    </Link>
+                    <button
+                        type="button"
+                        onClick={() => setOpen(false)}
+                        className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background/60 hover:bg-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/70"
+                        aria-label="Close navigation"
+                    >
+                        <X className="h-5 w-5" />
+                    </button>
+                </div>
+                <div className="space-y-7 overflow-y-auto pr-2">
+                    {navGroups.map((group) => (
+                        <div key={group.heading}>
+                            <h2 className="font-medium text-[11px] uppercase tracking-wider text-muted-foreground mb-2 px-3">
+                                {group.heading}
+                            </h2>
+                            <div className="space-y-1">
+                                {group.items.map((item) => (
+                                    <NavItem key={item.href} href={item.href}>
+                                        {item.title}
+                                    </NavItem>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </aside>
+
+            {/* Content area */}
+            <div className="flex-1 flex flex-col min-w-0">
+                {/* Top bar (mobile) */}
+                <header className="lg:hidden sticky top-0 z-30 flex items-center gap-2 border-b border-border bg-[rgba(var(--surface-rgb),0.85)] backdrop-blur-xl px-4 py-2">
+                    <button
+                        type="button"
+                        onClick={() => setOpen((o) => !o)}
+                        className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background/60 hover:bg-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/70"
+                        aria-label={
+                            open ? "Close navigation" : "Open navigation"
+                        }
+                        aria-expanded={open}
+                    >
+                        {open ? (
+                            <X className="h-5 w-5" />
+                        ) : (
+                            <Menu className="h-5 w-5" />
+                        )}
+                    </button>
+                    <div className="flex flex-col">
+                        <span className="font-semibold text-sm">
+                            Nekoglass UI
+                        </span>
+                        {currentPage && (
+                            <span className="text-xs text-muted-foreground line-clamp-1">
+                                {currentPage.title}
+                            </span>
+                        )}
+                    </div>
+                </header>
+
+                <main
+                    id="main"
+                    className="flex-1 py-10 px-6 md:px-10 xl:px-14 max-w-4xl w-full mx-auto"
+                >
+                    {children}
+                    <PrevNextNav />
+                </main>
+            </div>
         </div>
     );
 }

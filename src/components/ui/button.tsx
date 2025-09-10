@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-    "inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-bold transition-all duration-300 ease-in-out hover:scale-105 hover:-translate-y-0.5 active:scale-95 disabled:pointer-events-none disabled:opacity-50 [&_svg]:transition-transform [&_svg]:duration-300 [&_svg]:ease-in-out group",
+    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-bold transition-all duration-300 ease-in-out hover:cursor-pointer hover:scale-105 hover:-translate-y-0.5 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:transition-transform [&_svg]:duration-300 [&_svg]:ease-in-out group disabled:transform-none disabled:shadow-none disabled:hover:scale-100 disabled:hover:-translate-y-0 disabled:active:scale-100",
     {
         variants: {
             variant: {
@@ -23,8 +23,7 @@ const buttonVariants = cva(
                     "bg-success text-success-foreground shadow-lg hover:bg-success/90 group-hover:[&_svg]:rotate-12",
                 warning:
                     "bg-warning text-warning-foreground shadow-lg hover:bg-warning/90 group-hover:[&_svg]:rotate-12",
-                info:
-                    "bg-info text-info-foreground shadow-lg hover:bg-info/90 group-hover:[&_svg]:rotate-12",
+                info: "bg-info text-info-foreground shadow-lg hover:bg-info/90 group-hover:[&_svg]:rotate-12",
             },
             size: {
                 default: "h-10 px-6 py-2",
