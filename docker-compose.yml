@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nekoglass-ui:compose
+    container_name: nekoglass-ui
+    ports:
+      - "${PORT:-8080}:80"
+    environment:
+      # Server name for nginx (optional). Default '_' if not provided.
+      - SERVER_NAME=${SERVER_NAME:-_}
+      # Base path under which to serve the app (optional). Default '/'. Example '/app'.
+      - BASE_PATH=${BASE_PATH:-/}
+    restart: unless-stopped

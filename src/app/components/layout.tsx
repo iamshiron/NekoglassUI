@@ -16,8 +16,12 @@ const componentPages = [
     { title: "Input", href: "/components/input" },
     { title: "Label", href: "/components/label" },
     { title: "Card", href: "/components/card" },
+    { title: "Tabs", href: "/components/tabs" },
+].sort((a, b) => a.title.localeCompare(b.title));
+
+const utilityPages = [
     { title: "Background", href: "/components/background" },
-];
+].sort((a, b) => a.title.localeCompare(b.title));
 
 const gettingStartedPages = [
     { title: "Introduction", href: "/docs/introduction" },
