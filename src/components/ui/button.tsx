@@ -18,7 +18,7 @@ const buttonVariants = cva(
                 secondary:
                     "bg-secondary text-secondary-foreground shadow-lg hover:bg-secondary/80 group-hover:[&_svg]:rotate-12",
                 ghost: "hover:bg-accent hover:text-accent-foreground group-hover:[&_svg]:rotate-12",
-                link: "text-primary underline-offset-4 hover:underline",
+                link: "text-primary underline-offset-4 underline",
                 success:
                     "bg-success text-success-foreground shadow-lg hover:bg-success/90 group-hover:[&_svg]:rotate-12",
                 warning:

@@ -101,8 +101,8 @@ function PrevNextNav() {
                     >
                         <Link href={prev.href} className="group">
                             <ArrowLeftIcon className="h-4 w-4" />
-                            <span className="flex flex-col text-left ">
-                                <span className="text-[10px] font-normal tracking-wider text-muted-foreground -mb-0.5">
+                            <span className="flex flex-col text-left">
+                                <span className="text-[12px] font-normal tracking-wider text-muted-foreground -mb-0.5">
                                     Previous
                                 </span>
                                 {prev.title}
@@ -123,8 +123,8 @@ function PrevNextNav() {
                         className="w-full justify-end"
                     >
                         <Link href={next.href} className="group">
-                            <span className="flex flex-col text-right ">
-                                <span className="text-[10px] font-normal tracking-wider text-muted-foreground -mb-0.5">
+                            <span className="flex flex-col text-right">
+                                <span className="text-[12px] font-normal tracking-wider text-muted-foreground -mb-0.5">
                                     Next
                                 </span>
                                 {next.title}
