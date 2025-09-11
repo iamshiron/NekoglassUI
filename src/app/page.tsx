@@ -2,6 +2,15 @@
 
 import { Button } from "@/components/ui/button";
 import { Background } from "@/components/ui/background";
+import Link from "next/link";
+
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
 
 export default function Home() {
     return (
@@ -15,90 +24,62 @@ export default function Home() {
                             NekoglassUI
                         </h1>
                         <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-                            A drop-in ShadCN compatible component layer styled
-                            with a refined tri-theme glass aesthetic. Build
-                            vivid, theme-aware experiences without rewriting
-                            your UI primitives.
+                            A stylized component library built on the power of
+                            ShadCN, with a focus on glassmorphism and pastel
+                            colors.
                         </p>
                     </div>
                     <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
-                        <Button size="lg" className="px-8">
-                            Get Started
+                        <Button size="lg">
+                            <Link href="/docs/installation">Get Started</Link>
                         </Button>
-                        <Button
-                            size="lg"
-                            variant="secondary"
-                            className="px-8"
-                            asChild
-                        >
-                            <a href="/docs/components/button">
+                        <Button size="lg" variant="outline" asChild>
+                            <Link href="/components/button">
                                 Browse Components
-                            </a>
-                        </Button>
-                        <Button
-                            size="lg"
-                            variant="outline"
-                            className="px-8"
-                            asChild
-                        >
-                            <a href="/docs/theming">Theming</a>
+                            </Link>
                         </Button>
                     </div>
                     <div className="grid sm:grid-cols-3 gap-4 pt-8">
-                        <FeatureCard
-                            title="Theme Aware"
-                            desc="Light · Dark · AMOLED with semantic tokens."
-                        />
-                        <FeatureCard
-                            title="API Compatible"
-                            desc="Drop into ShadCN codebases with zero refactors."
-                        />
-                        <FeatureCard
-                            title="Glass Surface"
-                            desc="Consistent frosted layers & motion micro-interactions."
-                        />
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Theme Aware</CardTitle>
+                            </CardHeader>
+                            <CardContent className="text-sm text-muted-foreground">
+                                Components automatically consume theme tokens
+                                and glass surfaces for consistent visuals.
+                            </CardContent>
+                        </Card>
+
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>ShadCN Based</CardTitle>
+                            </CardHeader>
+                            <CardContent className="text-sm text-muted-foreground">
+                                Build your library by copying components
+                                directly into your codebase. No monolithic
+                                dependencies, full ownership of the code.
+                            </CardContent>
+                        </Card>
+
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Glass Surface</CardTitle>
+                            </CardHeader>
+                            <CardContent className="text-sm text-muted-foreground">
+                                Frosted backgrounds, subtle borders and
+                                accessible focus states form the core visual
+                                language.
+                            </CardContent>
+                        </Card>
                     </div>
                 </div>
             </main>
 
             <footer className="relative z-10 px-6 md:px-10 py-6 text-xs text-muted-foreground flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="flex items-center gap-2">
-                    <span>© {new Date().getFullYear()} Nekoglass UI</span>
-                </div>
-                <div className="flex items-center gap-4">
-                    <a
-                        href="/docs/introduction"
-                        className="hover:text-foreground transition-colors"
-                    >
-                        Docs
-                    </a>
-                    <a
-                        href="/docs/components/button"
-                        className="hover:text-foreground transition-colors"
-                    >
-                        Components
-                    </a>
-                    <a
-                        href="https://github.com"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="hover:text-foreground transition-colors"
-                    >
-                        GitHub
-                    </a>
-                </div>
+                <span>
+                    <span>© 2025 IAmShiron</span>
+                </span>
             </footer>
-        </div>
-    );
-}
-
-function FeatureCard({ title, desc }: { title: string; desc: string }) {
-    return (
-        <div className="relative p-4 rounded-xl border border-[rgba(var(--surface-rgb),0.7)] bg-[rgba(var(--surface-rgb),0.55)] backdrop-blur-sm flex flex-col gap-2 text-left shadow-lg">
-            <h3 className="text-sm font-semibold tracking-wide">{title}</h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-                {desc}
-            </p>
         </div>
     );
 }

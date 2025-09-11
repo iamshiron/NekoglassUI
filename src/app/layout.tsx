@@ -41,7 +41,6 @@ export default function RootLayout({
                     inconsolata.variable,
                 )}
             >
-                {/* Skip to content link for accessibility */}
                 <a
                     href="#main-content"
                     className={cn(

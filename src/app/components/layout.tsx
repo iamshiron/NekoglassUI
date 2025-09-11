@@ -8,13 +8,15 @@ import { useState, useEffect } from "react";
 import { ArrowLeftIcon, ArrowRightIcon, XIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { Background } from "@/components/ui/background";
+import { NavItem } from "@/components/ui/nav-item";
 
 // Data model for docs navigation (extend here to add more components)
 const componentPages = [
-    { title: "Button", href: "/docs/components/button" },
-    { title: "Input", href: "/docs/components/input" },
-    { title: "Label", href: "/docs/components/label" },
-    { title: "Background", href: "/docs/components/background" },
+    { title: "Button", href: "/components/button" },
+    { title: "Input", href: "/components/input" },
+    { title: "Label", href: "/components/label" },
+    { title: "Card", href: "/components/card" },
+    { title: "Background", href: "/components/background" },
 ];
 
 const gettingStartedPages = [
@@ -31,46 +33,6 @@ const navGroups: {
     { heading: "Getting Started", items: gettingStartedPages },
     { heading: "Components", items: componentPages },
 ];
-
-// Navigation item component with active state
-function NavItem({
-    href,
-    children,
-    className,
-}: {
-    href: string;
-    children: React.ReactNode;
-    className?: string;
-}) {
-    const pathname = usePathname();
-    const isActive = pathname === href || pathname.startsWith(`${href}/`);
-
-    return (
-        <Link
-            href={href}
-            className={cn(
-                "group relative flex items-center gap-2 py-2 px-3 rounded-md text-sm transition-colors",
-                "hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/70",
-                isActive
-                    ? "bg-accent text-accent-foreground font-medium shadow-sm"
-                    : "text-muted-foreground",
-                className,
-            )}
-        >
-            {/* Active indicator bar */}
-            <span
-                className={cn(
-                    "absolute left-0 top-1/2 -translate-y-1/2 h-6 w-1 rounded-full bg-primary transition-opacity",
-                    isActive
-                        ? "opacity-100"
-                        : "opacity-0 group-hover:opacity-40",
-                )}
-                aria-hidden
-            />
-            <span className="relative z-10">{children}</span>
-        </Link>
-    );
-}
 
 function PrevNextNav() {
     const pathname = usePathname();
@@ -182,11 +144,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {/* Sidebar (desktop) */}
             <aside
                 className={cn(
-                    "hidden md:flex w-64 shrink-0 border-r border-border bg-[rgba(var(--surface-rgb),0.55)] backdrop-blur-xl p-4",
-                    // position & sizing accounting for global header
+                    "hidden md:flex w-64 shrink-0 border-r border-border backdrop-blur-lg p-4",
                     "sticky overflow-hidden",
-                    "top-[var(--site-header-height,0px)]",
-                    "h-[calc(100vh-var(--site-header-height,0px))]",
                 )}
             >
                 <div className="flex flex-col w-full">
@@ -247,7 +206,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         <XIcon className="h-5 w-5" />
                     </Button>
                 </div>
-                <div className="space-y-7 pr-2 overflow-hidden">
+                <div className="space-y-7 px-2 overflow-hidden">
                     {navGroups.map((group) => (
                         <div key={group.heading}>
                             <h2 className="font-medium text-[11px] uppercase tracking-wider text-muted-foreground mb-2 px-3">
@@ -269,7 +228,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 {/* Global header handles mobile toggle now */}
                 <main
                     id="main"
-                    className="flex-1 py-10 px-6 md:px-10 xl:px-14 max-w-4xl w-full mx-auto"
+                    className="flex-1 pt-16 pb-8 px-6 md:px-10 xl:px-14 max-w-4xl w-full mx-auto"
                 >
                     {children}
                     <PrevNextNav />

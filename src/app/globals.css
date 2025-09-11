@@ -8,6 +8,10 @@
 @theme {
     --radius: 1rem;
 
+    --font-fredoka: "Fredoka", sans-serif;
+    --font-nunito: "Nunito", sans-serif;
+    --font-inconsolata: "Inconsolata", monospace;
+
     --color-background: var(--background);
     --color-foreground: var(--foreground);
     --color-border: var(--border);
@@ -29,7 +33,7 @@
 
 :root {
     --background: oklch(0.934 0.007 303.81);
-    --surface-rgb: 255 255 255;
+    --surface-rgb: 255, 255, 255;
     --foreground: oklch(0.187 0.01 303.487);
     --border: oklch(0.187 0.01 303.487 / 0.2);
     --primary: oklch(0.709 0.145 303.116);
@@ -46,6 +50,23 @@
     --destructive-foreground: oklch(0.187 0.01 303.487);
     --info: oklch(0.689 0.14 273.553);
     --info-foreground: oklch(0.187 0.01 303.487);
+
+    ::-webkit-scrollbar {
+        width: 12px;
+    }
+    ::-webkit-scrollbar-track {
+        background: rgba(var(--surface-rgb), 0.1);
+        border-radius: 0px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background-color: var(--primary);
+        border-radius: 12px;
+        border: 3px solid transparent;
+        background-clip: content-box;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: var(--accent);
+    }
 }
 
 .dark {
@@ -64,6 +85,23 @@
     --destructive-foreground: oklch(0.187 0.01 303.487);
     --info: oklch(0.689 0.14 273.553);
     --info-foreground: oklch(0.187 0.01 303.487);
+
+    ::-webkit-scrollbar {
+        width: 12px;
+    }
+    ::-webkit-scrollbar-track {
+        background: rgba(var(--surface-rgb), 0.1);
+        border-radius: 0px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background-color: var(--primary);
+        border-radius: 12px;
+        border: 3px solid transparent;
+        background-clip: content-box;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: var(--accent);
+    }
 }
 
 .amoled {
@@ -78,6 +116,23 @@
     --warning-foreground: oklch(0.187 0.01 303.487);
     --destructive-foreground: oklch(0.187 0.01 303.487);
     --info-foreground: oklch(0.187 0.01 303.487);
+
+    ::-webkit-scrollbar {
+        width: 12px;
+    }
+    ::-webkit-scrollbar-track {
+        background: rgba(var(--surface-rgb), 0.1);
+        border-radius: 0px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background-color: var(--primary);
+        border-radius: 12px;
+        border: 3px solid transparent;
+        background-clip: content-box;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: var(--accent);
+    }
 }
 
 @layer base {

@@ -17,6 +17,7 @@ const buttonVariants = cva(
                     "border border-solid bg-[rgba(var(--surface-rgb),0.55)] text-foreground shadow-lg backdrop-blur-sm hover:bg-accent hover:text-accent-foreground group-hover:[&_svg]:rotate-12",
                 secondary:
                     "bg-secondary text-secondary-foreground shadow-lg hover:bg-secondary/80 group-hover:[&_svg]:rotate-12",
+                accent: "bg-accent text-accent-foreground shadow-lg hover:bg-accent/90 group-hover:[&_svg]:rotate-12",
                 ghost: "hover:bg-accent hover:text-accent-foreground group-hover:[&_svg]:rotate-12",
                 link: "text-primary underline-offset-4 underline",
                 success:
