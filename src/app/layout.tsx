@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Nunito, Fredoka, Inconsolata } from "next/font/google";
+
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { SiteHeader } from "@/components/site/header";
 
 const nunito = Nunito({
     subsets: ["latin"],
@@ -39,7 +41,22 @@ export default function RootLayout({
                     inconsolata.variable,
                 )}
             >
-                {children}
+                {/* Skip to content link for accessibility */}
+                <a
+                    href="#main-content"
+                    className={cn(
+                        "sr-only focus:not-sr-only focus:absolute focus:z-50",
+                        "focus:top-2 focus:left-2 focus:px-4 focus:py-2",
+                        "focus:rounded-md focus:bg-primary focus:text-primary-foreground",
+                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                    )}
+                >
+                    Skip to content
+                </a>
+                <SiteHeader />
+                <main id="main-content" className="relative">
+                    {children}
+                </main>
             </body>
         </html>
     );

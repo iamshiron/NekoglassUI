@@ -4,16 +4,17 @@ import type React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-import { useState, useEffect, useMemo } from "react";
-import { Menu, X, ArrowLeft, ArrowRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowLeftIcon, ArrowRightIcon, XIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
+import { Background } from "@/components/ui/background";
 
 // Data model for docs navigation (extend here to add more components)
 const componentPages = [
     { title: "Button", href: "/docs/components/button" },
     { title: "Input", href: "/docs/components/input" },
     { title: "Label", href: "/docs/components/label" },
+    { title: "Background", href: "/docs/components/background" },
 ];
 
 const gettingStartedPages = [
@@ -89,7 +90,7 @@ function PrevNextNav() {
     return (
         <nav
             aria-label="Component page navigation"
-            className="mt-12 pt-8 border-t border-border flex flex-col gap-4 sm:flex-row sm:items-stretch"
+            className="mt-12 pt-8 border-t border-border flex flex-row items-stretch gap-4"
         >
             <div className="flex-1">
                 {prev ? (
@@ -99,8 +100,8 @@ function PrevNextNav() {
                         className="w-full justify-start"
                     >
                         <Link href={prev.href} className="group">
-                            <ArrowLeft className="h-4 w-4" />
-                            <span className="flex flex-col text-left leading-tight">
+                            <ArrowLeftIcon className="h-4 w-4" />
+                            <span className="flex flex-col text-left ">
                                 <span className="text-[10px] font-normal tracking-wider text-muted-foreground -mb-0.5">
                                     Previous
                                 </span>
@@ -122,13 +123,13 @@ function PrevNextNav() {
                         className="w-full justify-end"
                     >
                         <Link href={next.href} className="group">
-                            <span className="flex flex-col text-right leading-tight">
+                            <span className="flex flex-col text-right ">
                                 <span className="text-[10px] font-normal tracking-wider text-muted-foreground -mb-0.5">
                                     Next
                                 </span>
                                 {next.title}
                             </span>
-                            <ArrowRight className="h-4 w-4" />
+                            <ArrowRightIcon className="h-4 w-4" />
                         </Link>
                     </Button>
                 ) : (
@@ -145,13 +146,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     const [open, setOpen] = useState(false);
     const pathname = usePathname();
 
-    // Close mobile nav on route change
-    // Close the sidebar after navigation.
-    // The linter suggests fewer dependencies, but we explicitly depend on pathname for clarity.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
-        // reference pathname so linter understands dependency is intentional
-        void pathname; // Close mobile nav whenever route changes
+        void pathname;
         setOpen(false);
     }, [pathname]);
 
@@ -164,14 +160,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         }
     }, [open]);
 
-    const currentPage = useMemo(() => {
-        return navGroups
-            .flatMap((g) => g.items)
-            .find((i) => pathname.startsWith(i.href));
-    }, [pathname]);
+    // Listen for toggle requests from global SiteHeader hamburger (mobile)
+    useEffect(() => {
+        const handler = () => setOpen((o) => !o);
+        window.addEventListener("docs-sidebar:toggle", handler);
+        return () => window.removeEventListener("docs-sidebar:toggle", handler);
+    }, []);
 
+    // Header height supplied via CSS var --site-header-height (set in SiteHeader)
     return (
-        <div className="flex min-h-screen bg-background">
+        <div className="flex min-h-screen">
+            <Background />
+
             {/* Skip link */}
             <a
                 href="#main"
@@ -179,17 +179,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             >
                 Skip to content
             </a>
-
             {/* Sidebar (desktop) */}
-            <aside className="hidden lg:flex w-64 shrink-0 border-r border-border bg-[rgba(var(--surface-rgb),0.55)] backdrop-blur-xl p-4 sticky top-0 h-screen overflow-y-auto">
+            <aside
+                className={cn(
+                    "hidden md:flex w-64 shrink-0 border-r border-border bg-[rgba(var(--surface-rgb),0.55)] backdrop-blur-xl p-4",
+                    // position & sizing accounting for global header
+                    "sticky overflow-hidden",
+                    "top-[var(--site-header-height,0px)]",
+                    "h-[calc(100vh-var(--site-header-height,0px))]",
+                )}
+            >
                 <div className="flex flex-col w-full">
-                    <div className="mb-6 px-2">
-                        <Link href="/" className="flex items-center gap-2 py-2">
-                            <span className="font-bold text-xl tracking-tight bg-gradient-to-r from-primary to-purple-400 bg-clip-text text-transparent">
-                                Nekoglass UI
-                            </span>
-                        </Link>
-                    </div>
                     <div className="space-y-7">
                         {navGroups.map((group) => (
                             <div key={group.heading}>
@@ -213,11 +213,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     </div>
                 </div>
             </aside>
-
             {/* Mobile sidebar overlay */}
             <div
                 className={cn(
-                    "lg:hidden fixed inset-0 z-40 transition-opacity",
+                    "md:hidden fixed inset-0 z-40 transition-opacity",
                     open
                         ? "bg-black/40 backdrop-blur-sm"
                         : "pointer-events-none opacity-0",
@@ -227,7 +226,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             />
             <aside
                 className={cn(
-                    "lg:hidden fixed z-50 top-0 left-0 h-full w-72 border-r border-border bg-[rgba(var(--surface-rgb),0.85)] backdrop-blur-xl p-4 transition-transform ease-out duration-300 flex flex-col",
+                    "md:hidden fixed z-50 top-0 left-0 h-full w-72 border-r border-border bg-[rgba(var(--surface-rgb),0.85)] backdrop-blur-xl p-4 transition-transform ease-out duration-300 flex flex-col",
                     open ? "translate-x-0" : "-translate-x-full",
                 )}
                 aria-label="Documentation navigation"
@@ -238,16 +237,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             Nekoglass UI
                         </span>
                     </Link>
-                    <button
-                        type="button"
+                    <Button
+                        variant={"outline"}
+                        size={"icon"}
+                        className="rounded-lg"
                         onClick={() => setOpen(false)}
-                        className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background/60 hover:bg-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/70"
-                        aria-label="Close navigation"
+                        aria-label="Toggle documentation navigation"
                     >
-                        <X className="h-5 w-5" />
-                    </button>
+                        <XIcon className="h-5 w-5" />
+                    </Button>
                 </div>
-                <div className="space-y-7 overflow-y-auto pr-2">
+                <div className="space-y-7 pr-2 overflow-hidden">
                     {navGroups.map((group) => (
                         <div key={group.heading}>
                             <h2 className="font-medium text-[11px] uppercase tracking-wider text-muted-foreground mb-2 px-3">
@@ -264,38 +264,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     ))}
                 </div>
             </aside>
-
             {/* Content area */}
             <div className="flex-1 flex flex-col min-w-0">
-                {/* Top bar (mobile) */}
-                <header className="lg:hidden sticky top-0 z-30 flex items-center gap-2 border-b border-border bg-[rgba(var(--surface-rgb),0.85)] backdrop-blur-xl px-4 py-2">
-                    <button
-                        type="button"
-                        onClick={() => setOpen((o) => !o)}
-                        className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background/60 hover:bg-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/70"
-                        aria-label={
-                            open ? "Close navigation" : "Open navigation"
-                        }
-                        aria-expanded={open}
-                    >
-                        {open ? (
-                            <X className="h-5 w-5" />
-                        ) : (
-                            <Menu className="h-5 w-5" />
-                        )}
-                    </button>
-                    <div className="flex flex-col">
-                        <span className="font-semibold text-sm">
-                            Nekoglass UI
-                        </span>
-                        {currentPage && (
-                            <span className="text-xs text-muted-foreground line-clamp-1">
-                                {currentPage.title}
-                            </span>
-                        )}
-                    </div>
-                </header>
-
+                {/* Global header handles mobile toggle now */}
                 <main
                     id="main"
                     className="flex-1 py-10 px-6 md:px-10 xl:px-14 max-w-4xl w-full mx-auto"

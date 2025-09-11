@@ -55,7 +55,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
         // --- Common Class Definitions ---
         const commonInputBaseClasses =
-            "flex pl-3 w-full rounded-lg border border-solid border-[rgba(var(--surface-rgb),0.7)] bg-[rgba(var(--surface-rgb),0.2)] text-sm leading-tight font-fredoka text-foreground ring-offset-background selection:bg-primary selection:text-primary-foreground file:border-0 file:bg-transparent file:text-sm file:font-medium transition-[background,box-shadow] duration-200 ease-out";
+            "flex pl-3 w-full rounded-lg border border-solid border-[rgba(var(--surface-rgb),0.7)] bg-[rgba(var(--surface-rgb),0.2)] text-sm  font-fredoka text-foreground ring-offset-background selection:bg-primary selection:text-primary-foreground file:border-0 file:bg-transparent file:text-sm file:font-medium transition-[background,box-shadow] duration-200 ease-out";
         const commonInputStateClasses =
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40";
 
