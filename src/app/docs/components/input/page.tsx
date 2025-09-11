@@ -15,6 +15,7 @@ export default function Page() {
             <h2 className="text-2xl font-semibold mb-4">Basic Usage</h2>
             <div className="flex flex-col gap-4 mb-8 max-w-md">
                 <Input placeholder="Default input" />
+                <Input />
                 <Input placeholder="Disabled input" disabled />
                 <Input placeholder="Required input" required />
                 <Input
