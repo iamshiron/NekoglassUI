@@ -55,35 +55,17 @@ export default function Page() {
 
             <h2 className="text-2xl font-semibold mb-4">Custom Styling</h2>
             <div className="flex flex-col gap-4 mb-8 max-w-md">
-                <div className="relative">
-                    <MagnifyingGlassIcon
-                        size={20}
-                        className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-                    />
-                    <Input placeholder="Search..." className="pl-10" />
-                </div>
-                <div className="relative">
-                    <EnvelopeIcon
-                        size={20}
-                        className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-                    />
-                    <Input
-                        type="email"
-                        placeholder="Email address"
-                        className="pl-10"
-                    />
-                </div>
-                <div className="relative">
-                    <LockIcon
-                        size={20}
-                        className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-                    />
-                    <Input
-                        type="password"
-                        placeholder="Password"
-                        className="pl-10"
-                    />
-                </div>
+                <Input icon={<MagnifyingGlassIcon />} placeholder="Search..." />
+                <Input
+                    icon={<EnvelopeIcon />}
+                    type="email"
+                    placeholder="Email address"
+                />
+                <Input
+                    icon={<LockIcon />}
+                    type="password"
+                    placeholder="Password"
+                />
             </div>
 
             <h2 className="text-2xl font-semibold mb-4">Sizes & Width</h2>
