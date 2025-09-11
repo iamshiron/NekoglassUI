@@ -7,11 +7,13 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
 import { Menu, X, ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 
 // Data model for docs navigation (extend here to add more components)
 const componentPages = [
     { title: "Button", href: "/docs/components/button" },
     { title: "Input", href: "/docs/components/input" },
+    { title: "Label", href: "/docs/components/label" },
 ];
 
 const gettingStartedPages = [
