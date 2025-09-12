@@ -17,9 +17,9 @@ export default function Home() {
         <div className="relative min-h-screen flex flex-col overflow-hidden">
             <Background />
 
-            <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 md:px-12 py-16">
+            <main className="z-10 flex-1 flex flex-col items-center justify-center px-6 md:px-12">
                 <div className="max-w-3xl text-center space-y-8">
-                    <div className="space-y-4">
+                    <div className="mt-16">
                         <h1 className="text-8xl font-bold mb-6 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                             NekoglassUI
                         </h1>

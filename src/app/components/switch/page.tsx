@@ -4,6 +4,8 @@ import * as React from "react";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
+import { SunIcon, MoonIcon, CheckIcon } from "@phosphor-icons/react";
+
 export default function Page() {
     const [notifications, setNotifications] = React.useState(true);
     const [autoUpdates, setAutoUpdates] = React.useState(false);
@@ -21,6 +23,26 @@ export default function Page() {
                 <div className="flex items-center gap-3">
                     <Switch id="s-default" defaultChecked />
                     <Label htmlFor="s-default">Default on</Label>
+                </div>
+            </div>
+
+            <h2 className="text-2xl font-semibold mb-4">Icons</h2>
+            <div className="flex flex-col gap-4 mb-10 max-w-md">
+                <div className="flex items-center gap-3">
+                    <Switch
+                        id="s-theme"
+                        disabledIcon={<SunIcon />}
+                        enabledIcon={<MoonIcon />}
+                    />
+                    <Label htmlFor="s-theme">Change Theme</Label>
+                </div>
+                <div className="flex items-center gap-3">
+                    <Switch
+                        id="s-default-icon"
+                        defaultChecked
+                        enabledIcon={<CheckIcon />}
+                    />
+                    <Label htmlFor="s-default-icon">Enabled</Label>
                 </div>
             </div>
 

@@ -114,9 +114,9 @@ export function SiteHeader() {
                     (window as any).__nekoglass_header_scroll_handler = handler;
                 }}
                 className={cn(
-                    "bg-background/35 backdrop-blur-lg",
+                    "bg-background/35 backdrop-blur-lg border-foreground/25 border-[1px]",
                     "fixed z-40 top-4 left-1/2 -translate-x-1/2 max-w-5xl px-4 sm:px-6",
-                    "border-[rgba(var(--surface-rgb),0.7)] text-card-foreground rounded-xl backdrop-blur-sm",
+                    "text-card-foreground rounded-xl backdrop-blur-sm",
                     "py-3 flex items-center justify-between gap-4 shadow-sm",
                 )}
             >
