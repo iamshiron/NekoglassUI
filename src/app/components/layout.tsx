@@ -19,6 +19,7 @@ const componentPages = [
     { title: "Tabs", href: "/components/tabs" },
     { title: "Switch", href: "/components/switch" },
     { title: "Checkbox", href: "/components/checkbox" },
+    { title: "Context Menu", href: "/components/context-menu" },
 ].sort((a, b) => a.title.localeCompare(b.title));
 
 const utilityPages = [
@@ -38,6 +39,7 @@ const navGroups: {
 }[] = [
     { heading: "Getting Started", items: gettingStartedPages },
     { heading: "Components", items: componentPages },
+    { heading: "Utilities", items: utilityPages },
 ];
 
 function PrevNextNav() {
