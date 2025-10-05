@@ -20,7 +20,7 @@ function NavItem({
 
     return (
         <Button
-            className="w-full text-left p-0"
+            className={cn("w-full text-left p-0", className)}
             variant={isActive ? "accent" : "ghost"}
         >
             <Link

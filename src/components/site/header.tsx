@@ -40,14 +40,12 @@ export function SiteHeader() {
                     headerRef.current = el;
 
                     // cleanup previous handler if any
-                    const prev = (window as any)
-                        .__nekoglass_header_scroll_handler;
+                    const prev = window.__nekoglass_header_scroll_handler;
                     if (prev) {
                         try {
                             window.removeEventListener("scroll", prev);
                         } catch {}
-                        delete (window as any)
-                            .__nekoglass_header_scroll_handler;
+                        delete window.__nekoglass_header_scroll_handler;
                     }
 
                     if (!el) return;
@@ -66,9 +64,8 @@ export function SiteHeader() {
                         : "transform 200ms ease, opacity 200ms ease";
 
                     // simple scroll direction detector stored on window to persist across remounts
-                    (window as any).__nekoglass_last_scroll =
-                        (window as any).__nekoglass_last_scroll ??
-                        window.scrollY;
+                    window.__nekoglass_last_scroll =
+                        window.__nekoglass_last_scroll ?? window.scrollY;
                     let ticking = false;
                     const threshold = 2;
 
@@ -77,8 +74,7 @@ export function SiteHeader() {
                         ticking = true;
                         requestAnimationFrame(() => {
                             const current = window.scrollY;
-                            const last =
-                                (window as any).__nekoglass_last_scroll || 0;
+                            const last = window.__nekoglass_last_scroll || 0;
 
                             if (current - last > threshold && current > 20) {
                                 // scrolling down -> hide
@@ -103,7 +99,7 @@ export function SiteHeader() {
                                 }
                             }
 
-                            (window as any).__nekoglass_last_scroll = current;
+                            window.__nekoglass_last_scroll = current;
                             ticking = false;
                         });
                     };
@@ -111,7 +107,7 @@ export function SiteHeader() {
                     window.addEventListener("scroll", handler, {
                         passive: true,
                     });
-                    (window as any).__nekoglass_header_scroll_handler = handler;
+                    window.__nekoglass_header_scroll_handler = handler;
                 }}
                 className={cn(
                     "bg-background/35 backdrop-blur-lg border-foreground/25 border-[1px]",

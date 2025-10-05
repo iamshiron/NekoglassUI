@@ -2,12 +2,7 @@
 
 import type * as React from "react";
 import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
-import {
-    CheckIcon,
-    CaretRightIcon,
-    DotIcon,
-    CircleIcon,
-} from "@phosphor-icons/react";
+import { CheckIcon, CaretRightIcon, CircleIcon } from "@phosphor-icons/react";
 
 import { cn } from "@/lib/utils";
 

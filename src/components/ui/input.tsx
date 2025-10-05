@@ -10,6 +10,11 @@ export interface InputProps
      * This is additive (not part of the original ShadCN API) and fully optional.
      */
     icon?: React.ReactNode;
+    /**
+     * Enables the floating label pattern. When false, the provided placeholder
+     * text is rendered normally (no floating animation). Default: true.
+     */
+    floatingLabel?: boolean;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -23,6 +28,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             onChange,
             value,
             defaultValue,
+            floatingLabel = true,
             ...props
         },
         ref,
@@ -68,7 +74,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             "peer-focus:scale-75 peer-[:not(:placeholder-shown)]:scale-75 peer-data-[has-value=true]:scale-75 peer-focus:mr-1 peer-[:not(:placeholder-shown)]:mr-1 peer-data-[has-value=true]:mr-1";
 
         // --- Simple (Non-Floating) Variant ---
-        if (!placeholder) {
+        // Triggered when either no placeholder supplied OR floatingLabel is disabled.
+        if (!placeholder || !floatingLabel) {
             if (icon) {
                 return (
                     <div className="relative">
@@ -143,28 +150,30 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                     ref={ref}
                     {...props}
                 />
-                <label
-                    htmlFor={inputId}
-                    className={cn(
-                        "pointer-events-none absolute left-3 flex items-center gap-1 origin-left select-none font-fredoka transition-all duration-200 ease-out",
-                        "top-1/2 -translate-y-1/2 text-sm text-foreground/75", // Default state
-                        labelFloatedStateClasses, // Floated position and size
-                        labelFloatedColorClasses, // Floated text color
-                        "peer-aria-[invalid=true]:text-destructive", // Invalid state
-                    )}
-                >
-                    {icon && (
-                        <span
-                            className={cn(
-                                "inline-flex items-center transition-all duration-200 h-4 text-base leading-none",
-                                iconFloatedStateClasses,
-                            )}
-                        >
-                            {icon}
-                        </span>
-                    )}
-                    <span>{placeholder}</span>
-                </label>
+                {floatingLabel && (
+                    <label
+                        htmlFor={inputId}
+                        className={cn(
+                            "pointer-events-none absolute left-3 flex items-center gap-1 origin-left select-none font-fredoka transition-all duration-200 ease-out",
+                            "top-1/2 -translate-y-1/2 text-sm text-foreground/75",
+                            labelFloatedStateClasses,
+                            labelFloatedColorClasses,
+                            "peer-aria-[invalid=true]:text-destructive",
+                        )}
+                    >
+                        {icon && (
+                            <span
+                                className={cn(
+                                    "inline-flex items-center transition-all duration-200 h-4 text-base leading-none",
+                                    iconFloatedStateClasses,
+                                )}
+                            >
+                                {icon}
+                            </span>
+                        )}
+                        <span>{placeholder}</span>
+                    </label>
+                )}
             </div>
         );
     },

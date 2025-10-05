@@ -13,6 +13,7 @@ import { NavItem } from "@/components/ui/nav-item";
 // Data model for docs navigation (extend here to add more components)
 const componentPages = [
     { title: "Button", href: "/components/button" },
+    { title: "Button Group", href: "/components/button-group" },
     { title: "Input", href: "/components/input" },
     { title: "Label", href: "/components/label" },
     { title: "Card", href: "/components/card" },
@@ -20,6 +21,7 @@ const componentPages = [
     { title: "Switch", href: "/components/switch" },
     { title: "Checkbox", href: "/components/checkbox" },
     { title: "Context Menu", href: "/components/context-menu" },
+    { title: "Progress", href: "/components/progress" },
 ].sort((a, b) => a.title.localeCompare(b.title));
 
 const utilityPages = [
@@ -205,8 +207,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         </span>
                     </Link>
                     <Button
-                        variant={"outline"}
-                        size={"icon"}
+                        variant="outline"
+                        size="icon"
                         className="rounded-lg"
                         onClick={() => setOpen(false)}
                         aria-label="Toggle documentation navigation"
